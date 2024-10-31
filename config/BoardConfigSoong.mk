@@ -29,7 +29,6 @@ SOONG_CONFIG_omniGlobalVars += \
     additional_gralloc_10_usage_bits \
     camera_override_format_from_reserved \
     target_create_device_symlinks \
-    target_health_charging_control_charging_path \
     target_health_charging_control_charging_enabled \
     target_health_charging_control_charging_disabled \
     target_health_charging_control_deadline_path \
@@ -50,6 +49,11 @@ SOONG_CONFIG_omniGlobalVars += \
     target_use_sdclang \
     target_camera_needs_client_info \
     target_enforce_ab_ota_partition_list
+
+ifneq ($(TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH),)
+SOONG_CONFIG_omniGlobalVars += \
+    target_health_charging_control_charging_path
+endif
 
 SOONG_CONFIG_NAMESPACES += omniQcomVars
 SOONG_CONFIG_omniQcomVars += \
@@ -95,7 +99,9 @@ SOONG_CONFIG_omniGlobalVars_useWeekly ?= false
 
 # Soong value variables
 SOONG_CONFIG_omniGlobalVars_additional_gralloc_10_usage_bits := $(TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS)
+ifneq ($(TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH),)
 SOONG_CONFIG_omniGlobalVars_target_health_charging_control_charging_path := $(TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH)
+endif
 SOONG_CONFIG_omniGlobalVars_target_health_charging_control_charging_enabled := $(TARGET_HEALTH_CHARGING_CONTROL_CHARGING_ENABLED)
 SOONG_CONFIG_omniGlobalVars_target_health_charging_control_charging_disabled := $(TARGET_HEALTH_CHARGING_CONTROL_CHARGING_DISABLED)
 SOONG_CONFIG_omniGlobalVars_target_health_charging_control_deadline_path := $(TARGET_HEALTH_CHARGING_CONTROL_DEADLINE_PATH)
