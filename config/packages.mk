@@ -1,6 +1,10 @@
 # OmniRom Platform Library
 PRODUCT_PACKAGES += \
     omnirom-res \
+    OmniLib \
+    omnirom.internal
+
+PRODUCT_SYSTEM_SERVER_JARS += \
     OmniLib
 
 # Additional apps
