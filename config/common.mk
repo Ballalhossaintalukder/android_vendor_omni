@@ -122,6 +122,9 @@ PRODUCT_PACKAGES += \
     QuickAccessWallet
 endif
 
+# temporary
+PRODUCT_BROKEN_SUBOPTIMAL_ORDER_OF_SYSTEM_SERVER_JARS := true
+
 # Versioning
 -include vendor/omni/config/version.mk
 
