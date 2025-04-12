@@ -42,6 +42,9 @@ PRODUCT_PACKAGES += \
     SystemWebView \
     omni-overlays
 
+# Config
+PRODUCT_PACKAGES += \
+    SimpleDeviceConfig
 
 $(call inherit-product-if-exists, external/google-fonts/lato/fonts.mk)
 $(call inherit-product-if-exists, vendor/omni/prebuilt/fonts/fonts.mk)
