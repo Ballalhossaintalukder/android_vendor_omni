@@ -17,8 +17,5 @@
 <resources>
     <string-array name="configs_base">
 
-        <!-- Enable the new and advanced Privacy Hub -->
-        <item>privacy/safety_center_is_enabled=true</item>
-
     </string-array>
 </resources>
