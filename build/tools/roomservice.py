@@ -58,6 +58,14 @@ def check_repo_exists(git_data, device):
 
 
 def search_gerrit_for_device(device):
+    # hack attack
+    device_mapping = {"raven":"android_device_google_raven",
+                      "oriole":"android_device_google_oriole",
+                      "zenfone7":"android_device_asus_zenfone7",
+                      "zenfone8":"android_device_asus_zenfone8",
+                      "zenfone9":"android_device_asus_zenfone9"}
+    url = device_mapping[device]
+    return {"id":url}
     # TODO: In next gerrit release regex search with r= should be supported!
     git_search_url = "https://{gerrit_url}/projects/?m={device}".format(
         gerrit_url=gerrit_url,
