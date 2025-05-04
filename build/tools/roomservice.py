@@ -40,6 +40,7 @@ local_manifest_dir = ".repo/local_manifests"
 android_team = "omnirom"
 # url to gerrit repository
 gerrit_url = "gerrit.omnirom.org"
+github_url = "api.github.com"
 
 
 def check_repo_exists(git_data, device):
@@ -58,14 +59,6 @@ def check_repo_exists(git_data, device):
 
 
 def search_gerrit_for_device(device):
-    # hack attack
-    device_mapping = {"raven":"android_device_google_raven",
-                      "oriole":"android_device_google_oriole",
-                      "zenfone7":"android_device_asus_zenfone7",
-                      "zenfone8":"android_device_asus_zenfone8",
-                      "zenfone9":"android_device_asus_zenfone9"}
-    url = device_mapping[device]
-    return {"id":url}
     # TODO: In next gerrit release regex search with r= should be supported!
     git_search_url = "https://{gerrit_url}/projects/?m={device}".format(
         gerrit_url=gerrit_url,
@@ -87,6 +80,38 @@ def search_gerrit_for_device(device):
         print("found the {} device repo".format(device))
         return device_data
 
+def check_repo_exists_github(git_data, device):
+    if device.count("_") < 2:
+        re_match = "android_device_.*_{device}".format(device=device)
+    else:
+        re_match = "android_device.*_{device}".format(device=device)
+
+    for r in git_data:
+        if re.match(re_match, r["name"]):
+            return r
+
+    raise Exception("{device} not found,"
+                        "exiting roomservice".format(device=device))
+
+def search_github_for_device(device):
+    # TODO: In next gerrit release regex search with r= should be supported!
+    git_search_url = "https://{github_url}/search/repositories?q={device}+owner:omnirom".format(
+        github_url=github_url,
+        device=device
+    )
+    git_req = urllib.request.Request(git_search_url)
+    try:
+        response = urllib.request.urlopen(git_req)
+    except urllib.request.HTTPError:
+        print("There was an issue connecting to gerrit."
+              " Please try again in a minute")
+    except urllib.request.URLError:
+        print("WARNING: No network connection available.")
+    else:
+        git_data = json.load(response)
+        device_data = check_repo_exists_github(git_data["items"], device)
+        print("found the {} device repo".format(device))
+        return {"id":device_data["name"]}
 
 def parse_device_directory(device_url, device):
     if device.count("_") < 2:
@@ -399,7 +424,7 @@ def check_device_exists(device):
 def fetch_device(device):
     if check_device_exists(device):
         print("WARNING: Trying to fetch a device that's already there")
-    git_data = search_gerrit_for_device(device)
+    git_data = search_github_for_device(device)
     if git_data is not None:
         device_url = git_data['id']
         device_dir = parse_device_directory(device_url, device)
