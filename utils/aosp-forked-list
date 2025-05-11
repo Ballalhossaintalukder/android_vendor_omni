@@ -10,7 +10,6 @@ frameworks/native
 frameworks/opt/telephony
 hardware/interfaces
 hardware/libhardware
-hardware/ril
 packages/apps/Contacts
 packages/apps/Dialer
 packages/apps/Launcher3
